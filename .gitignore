@@ -1,0 +1,13 @@
+cache/
+__pycache__/
+*.py[cod]
+*$py.class
+.idea/
+.vscode/
+*.contigs.fna
+*.fna
+*.fa
+*.fasta
+*.db
+*.gz
+!thesis/raw-thesis.db
