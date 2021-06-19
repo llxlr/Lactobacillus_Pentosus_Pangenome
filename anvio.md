@@ -422,9 +422,9 @@ $ anvi-interactive -c Bacillus_subtilis.db \
 
 为了清楚起见，这只是对数据最简单的样子，你还可以添加`--additional-view`或`--additional-layers`选项将更多数据信息添加到界面中，并对任何其他ANVI'O项目进行几乎做任何事情。作为示例，这里我将通过选择在这些不同分支中表示的分裂分离为不同的箱子，然后将我的选择存储到“集合”中来彼此分开，以便稍后总结。正如您所看到的，完成/冗余估计在单独选择时看起来要好得多。
 
-#### ~~3.2.5 统计~~
+#### 3.2.5 统计
 
-~~现在可以统计一下存储在空白配置文件数据库中的集合：~~
+现在可以统计一下存储在空白配置文件数据库中的集合：
 
 ```bash
 $ anvi-summarize -c Bacillus_subtilis.db \
@@ -433,7 +433,7 @@ $ anvi-summarize -c Bacillus_subtilis.db \
                  -o Bacillus_subtilis_summary
 ```
 
-~~此总结的结果是静态HTML输出。~~
+此总结的结果是静态HTML输出。
 
 ### 3.3 [微生物泛基因组工作流程](https://merenlab.org/2016/11/08/pangenomics-v2/)
 
