@@ -1,6 +1,6 @@
 # Anvi’o折腾记录和学习
 
-> [<img src="https://cdn.jsdelivr.net/gh/llxlr/cdn/img/2021/06/04/020611.jpeg" alt="星旅人" style="zoom: 33%;" />](https://github.com/llxlr/Lactobacillus_Pentosus_Pangenome/)  *2021.06.03~2021.06.08, 2021.06.19*
+> [<img src="https://cdn.jsdelivr.net/gh/llxlr/cdn/img/2021/06/04/020611.jpeg" alt="星旅人" style="width: 30px;" />](https://github.com/llxlr/Lactobacillus_Pentosus_Pangenome/)  *2021.06.03~2021.06.08, 2021.06.19*
 
 [toc]
 
