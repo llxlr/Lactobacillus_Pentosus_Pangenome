@@ -1,14 +1,14 @@
 # Anvi’o折腾记录和学习
 
-> [<img src="https://cdn.jsdelivr.net/gh/llxlr/cdn/img/2021/06/04/020611.jpeg" alt="星旅人" style="width: 30px;" />](https://github.com/llxlr/Lactobacillus_Pentosus_Pangenome/)  *2021.06.03~2021.06.08, 2021.06.19*
+> [<img src="https://cdn.jsdelivr.net/gh/llxlr/cdn/img/2021/06/04/020611.jpeg" alt="星旅人" style="width: 30px;"/>](https://github.com/llxlr/Lactobacillus_Pentosus_Pangenome/) *2021.06.03~2021.06.08, 2021.06.19*
 
 [toc]
 
-## 1 安装
+## 安装
 
 在`Ubuntu 20.04 LTS`里安装`anvi’o`，在`WSL2`中也适用。
 
-### 1.1 使用`Docker`安装（最简单）
+### 使用`Docker`安装（最简单）
 
 ```bash
 $ docker pull meren/anvio:7
@@ -36,7 +36,7 @@ $ sudo apt-get install docker-ce -y
 
 使用`Docker`安装的最大缺陷是占用空间较大，`anvi'o`的`v7`版本镜像高达`14.4G`，就离谱。
 
-### 1.2 使用`Conda`安装（最轻量）
+### 使用`Conda`安装（最轻量）
 
 （1）安装`Miniconda3`
 
@@ -101,6 +101,14 @@ $ conda update -n base -y --all  # 更新主环境所有包
 $ conda create -n anvio python=3.6 -y  # 创建python3.6的虚拟环境
 $ conda activate anvio  # 激活虚拟环境
 ```
+
+使用`environment.yml`创建环境：
+
+```bash
+$ conda env create -f environment.yml
+```
+
+之后就不用下面的手动安装`conda`的包，继续编译安装其他包。
 
 ```bash
 $ conda install -y -c bioconda \
@@ -193,9 +201,9 @@ $ cd /opt/miniconda3/pkgs/  # 进入下载目录
 $ ls | xargs rm -rf  # 批量删除所有不包含空格的非隐藏文件及目录
 ```
 
-## 2 使用
+## 使用
 
-### 2.1 [anvi-script-reformat-fasta](https://merenlab.org/software/anvio/help/7/programs/anvi-script-reformat-fasta/)
+### [anvi-script-reformat-fasta](https://merenlab.org/software/anvio/help/7/programs/anvi-script-reformat-fasta/)
 
 重新格式化 `FASTA` 文件（根据长度或给定的定义列表删除重叠群，以更简单的名称生成输出）。该程序将 `fasta` 文件转换为 `contigs-fasta`。 换句话说，它会重新格式化 `FASTA` 格式文件，以满足 `contigs-fasta` 所需的条件，其他 `anvi’o` 程序可以使用它。
 
@@ -209,7 +217,7 @@ $ anvi-script-reformat-fasta BGM48.fna -o BGM48.contigs.fna --simplify-name
 
 > [重叠群（contig）](https://baike.baidu.com/item/%E9%87%8D%E5%8F%A0%E7%BE%A4)：彼此可以通过末端的重叠序列相互连接形成连续的DNA长片段的一组克隆。
 
-### 2.2 [anvi-gen-contigs-database](https://merenlab.org/software/anvio/help/7/programs/anvi-gen-contigs-database/)
+### [anvi-gen-contigs-database](https://merenlab.org/software/anvio/help/7/programs/anvi-gen-contigs-database/)
 
  生成一个新的 `anvi'o` 重叠群数据库。
 
@@ -225,9 +233,9 @@ $ anvi-gen-contigs-database -f BGM48.contigs.fna -o BGM48.db
 $ anvi-profile --version  # 查看当前anvi'o的版本
 ```
 
-## 3 案例
+## 案例
 
-### 3.1 [宏基因组工作流程](https://merenlab.org/2016/06/22/anvio-tutorial-v2/)
+### [宏基因组工作流程](https://merenlab.org/2016/06/22/anvio-tutorial-v2/)
 
 所需文件：[`contigs.fa`](https://hub.fastgit.org/meren/anvio/raw/master/anvio/tests/sandbox/contigs.fa)、[`SAMPLE-01-RAW.bam`](https://hub.fastgit.org/meren/anvio/raw/master/anvio/tests/sandbox/SAMPLE-01-RAW.bam)、[`SAMPLE-02-RAW.bam`](https://hub.fastgit.org/meren/anvio/raw/master/anvio/tests/sandbox/SAMPLE-02-RAW.bam)和[`SAMPLE-03-RAW.bam`](https://hub.fastgit.org/meren/anvio/raw/master/anvio/tests/sandbox/SAMPLE-03-RAW.bam)
 
@@ -272,7 +280,7 @@ $ anvi-gen-contigs-database -f contigs.fa \
 
 未完待续……
 
-### 3.2 无映射分箱
+### 无映射分箱
 
 在[宏基因组工作流程](https://merenlab.org/2016/06/22/anvio-tutorial-v2/)中假设您有宏基因组短读。但如果拥有的只是一堆重叠群、基因组草图或MAG，而没有任何可映射的短读呢？关键是创建一个空白的Anvi’o配置文件数据库（profile database），与重叠群数据库（contigs database）一起使用。
 
@@ -292,7 +300,7 @@ Metabolic modules database ...................: 2
 tRNA-seq database ............................: 1
 ```
 
-#### 3.2.1 准备FASTA文件
+#### 准备FASTA文件
 
 此示例中，将下载[枯草芽孢杆菌](https://www.ncbi.nlm.nih.gov/bioproject/?term=ASM32874v1)（*Bacillus subtilis*）基因组，这是一种嵌合基因组（chimeric genome），从视觉上看会很有趣。
 
@@ -340,7 +348,7 @@ $ head -n 1 Bacillus_subtilis_fixed.fna
 
 接下来就是创建重叠群数据库。
 
-#### 3.2.2 创建重叠群数据库
+#### 创建重叠群数据库
 
 在此工作流程中创建重叠群数据库不同于其他工作流程：
 
@@ -389,7 +397,7 @@ $ anvi-script-gen_stats_for_single_copy_genes.py Bacillus_subtilis.db
 $ anvi-script-gen_stats_for_single_copy_genes.R Bacillus_subtilis.db.hits Bacillus_subtilis.db.genes
 ```
 
-#### 3.2.3 创建空白配置文件数据库
+#### 创建空白配置文件数据库
 
 要可视化重叠群数据库，我们需要一个anvi’o配置文件数据库。但是如果没有映射数据来创建配置文件数据库，那该怎么办？使用`--blank-profile`参数运行`anvi-profile`：
 
@@ -409,7 +417,7 @@ AUXILIARY-DATA.db  PROFILE.db  RUNLOG.txt
 
 生成了空白配置文件数据库后，便能够使用`anvi-interactive`可视化重叠群数据库中保存的内容。现在，可以使用实时完成/污染估计、存储和加载状态、创建集合并汇总它们进行分箱。
 
-#### 3.2.4 可视化
+#### 可视化
 
 一切都准备好开始以更好的方式启动Anvi'o交互式界面：
 
@@ -422,7 +430,7 @@ $ anvi-interactive -c Bacillus_subtilis.db \
 
 为了清楚起见，这只是对数据最简单的样子，你还可以添加`--additional-view`或`--additional-layers`选项将更多数据信息添加到界面中，并对任何其他ANVI'O项目进行几乎做任何事情。作为示例，这里我将通过选择在这些不同分支中表示的分裂分离为不同的箱子，然后将我的选择存储到“集合”中来彼此分开，以便稍后总结。正如您所看到的，完成/冗余估计在单独选择时看起来要好得多。
 
-#### 3.2.5 统计
+#### 统计
 
 现在可以统计一下存储在空白配置文件数据库中的集合：
 
@@ -435,7 +443,7 @@ $ anvi-summarize -c Bacillus_subtilis.db \
 
 此总结的结果是静态HTML输出。
 
-### 3.3 [微生物泛基因组工作流程](https://merenlab.org/2016/11/08/pangenomics-v2/)
+### [微生物泛基因组工作流程](https://merenlab.org/2016/11/08/pangenomics-v2/)
 
 本节可获取的信息：
 
@@ -489,7 +497,7 @@ findings, please do not forget to properly credit their work.
 $ anvi-self-test --suite pangenomics
 ```
 
-#### 3.3.1 生成anvi’o基因组存储
+#### 生成anvi’o基因组存储
 
 anvi’o基因组存储是一个专用数据库，用于存储有关基因组的信息。一个基因组存储可以仅由外部基因组、内部基因组或包含这两种类型的基因组生成。在进行下一步前，需要澄清这些定义：
 
@@ -560,7 +568,7 @@ anvi’o基因组存储是一个专用数据库，用于存储有关基因组的
 >
 > 
 
-#### 3.3.2 运行泛基因组分析
+#### 运行泛基因组分析
 
 一旦准备好基因组存储，就可以使用`anvi-pan-genome`运行实际的泛基因组分析。这是此命令的最简单形式（伪命令，仅供展示）：
 
@@ -619,7 +627,7 @@ $ anvi-pan-genome -g MY-GENOMES.db -n PROJECT_NAME
 
 一旦做完这些，就会出现一个带有分析结果的新目录。可以使用[附加数据表子系统](https://merenlab.org/2017/12/11/additional-data-tables/)在泛基因组数据库中添加或删除附加数据项。
 
-#### 3.3.3 展示泛基因组
+#### 展示泛基因组
 
 一旦做完分析，便可以使用`anvi-display-pan`程序展示结果。
 
@@ -662,7 +670,7 @@ $ anvi-import-state -p PROCHLORO/Prochlorococcus_Pan-PAN.db \
                     --name default
 ```
 
-#### 3.3.4 分割泛基因组
+#### 分割泛基因组
 
 在某些情况下，人们可能想把一个给定的泛基因组分割成多个独立的泛基因组，比如一个只包含核心基因簇的泛基因组，或者一个只包含单子的泛基因组，等等。
 
@@ -719,9 +727,9 @@ $ anvi-display-pan -p SPLIT_PANs/Singletons/PAN.db \
                    -g Prochlorococcus-GENOMES.db
 ```
 
-![](https://merenlab.org/images/anvio/2016-11-08-pan-genomics/splitting-pan-03.png)
+<img src="https://merenlab.org/images/anvio/2016-11-08-pan-genomics/splitting-pan-03.png"  />
 
-#### 3.3.5 检查基因簇
+#### 检查基因簇
 
 在你的分析中，每一个基因簇都将包含一个或多个氨基酸序列，这些序列来源于一个或多个基因组。虽然可能会有一个“核心”部分，其中所有的基因簇都会出现在每个基因组中，但也经常会发现基因簇包含来自一个基因组的一个以上的基因调用（即一个特定基因组中的所有多拷贝基因最终都会出现在同一个基因簇中）。你迟早会开始对一些基因簇感到好奇，并想更多地了解它们。可以右键点击任何一个基因簇，会看到这个菜单（甚至可能更多）。
 
@@ -759,7 +767,7 @@ $ anvi-display-pan -p SPLIT_PANs/Singletons/PAN.db \
 
 > 通过程序`anvi-get-sequences-for-gen-clusters`，也可以对基因簇进行高级访问。
 
-#### 3.3.6 推断基因簇的同质性
+#### 推断基因簇的同质性
 
 基因簇很好，但不是所有的基因簇都是平等的。通过简单地检查几个基因簇中的排列组合，可以看到不同基因组中氨基酸序列之间不同程度的分歧。
 
@@ -769,7 +777,7 @@ Anvi'o泛基因组包含两层总结每个基因簇的同质指数（功能和�
 
 > 可以使用`anvi-compute-gen-cluster-homogeneity`程序将同质性估计添加到现有的`anvi'o`泛数据库中。
 
-下面是我们的原绿球藻泛基因组中的一个例子（见最外层的两个附加层）。
+下面是原绿球藻泛基因组中的一个例子（见最外层的两个附加层）。
 
 ![](https://merenlab.org/images/anvio/2016-11-08-pan-genomics/homogeneity-indices-main.png)
 
@@ -793,11 +801,11 @@ Anvi'o泛基因组包含两层总结每个基因簇的同质指数（功能和�
 
 <img src="https://merenlab.org/images/anvio/2016-11-08-pan-genomics/hi-inspect-01.png" style="zoom:33%;" />
 
-你可以看到为什么相对较高的几何同质性分数是有意义的。这些基因中有三个具有相同的间隙/残基模式，而另一个基因末端的间隙使事情略有偏差，使几何得分接近0.75。另一方面，对齐的氨基酸的[颜色编码](https://merenlab.org/2018/02/13/color-coding-aa-alignments/)也给了我们一个关于它们之间缺乏功能同质性的提示。我们可以对几何同质性指数做同样的处理。自己尝试一下：根据几何同质性指数对pangenome进行排序，并检查一个得分相对较低的基因簇。
+你可以看到为什么相对较高的几何同质性分数是有意义的。这些基因中有三个具有相同的间隙/残基模式，而另一个基因末端的间隙使事情略有偏差，使几何得分接近0.75。另一方面，对齐的氨基酸的[颜色编码](https://merenlab.org/2018/02/13/color-coding-aa-alignments/)也给了我们一个关于它们之间缺乏功能同质性的提示。我们可以对几何同质性指数做同样的处理。自己尝试一下：根据几何同质性指数对泛基因组进行排序，并检查一个得分相对较低的基因簇。
 
 那么，为了对我们的基因簇进行更深入的分析，我们可以做些什么？Anvi'o提供了相当强大的过滤基因簇的方法，既可以通过命令行程序`anvi-get-sequences-for-gen-clusters`，也可以通过界面对数据进行交互式探索：
 
-<img src="https://merenlab.org/images/anvio/2016-11-08-pan-genomics/hi-search-pane-01.png" style="zoom: 33%;" />
+<img src="https://merenlab.org/images/anvio/2016-11-08-pan-genomics/hi-search-pane-01.png" style="zoom: 25%;" />
 
 `探索性分析`：假设你希望找到一个代表单拷贝核心基因的基因簇，其几何同质性与功能同质性之间的差异非常大。也就是说，你想要的东西在所有基因组中都是高度保守的，它在结构上受到限制，使它的排列保持同质性，但它有很大的空间以影响其功能异质性的方式进行多样化。你想要很多。但是anvi'o能做到吗？那么，对于这组非常特殊的约束条件，你可以先根据递减的几何同质性指数对所有的基因簇进行排序，然后输入以下数值，在应用前设置一个过滤器，突出显示匹配的基因簇。
 
@@ -813,7 +821,7 @@ Anvi'o泛基因组包含两层总结每个基因簇的同质指数（功能和�
 
 那些读过我们关于这个[主题研究](https://peerj.com/articles/4320/)的人，也许不会惊讶地知道，这个特定基因簇的COG功能注释解析为一种与细胞壁/膜/包膜生物形成有关的[酶](https://en.wikipedia.org/wiki/N-acetylmuramoyl-L-alanine_amidase)。当事情被证实时，总是很好。
 
-`审视系统基因组学`：这里是同质性指数的另一个使用例子。我们经常使用单拷贝核心基因簇进行系统发育分析，以估计我们基因组之间的进化关系。识别单拷贝核心基因簇很容易，要么通过高级过滤器，要么通过人工对基因簇进行分档。
+`审视系统基因组学`：这里是同质性指数的另一个使用例子。我们经常使用单拷贝核心基因簇进行系统发育分析，以估计我们基因组之间的进化关系。识别单拷贝核心基因簇很容易，要么通过高级过滤器，要么通过人工对基因簇进行分箱。
 
 ![](https://merenlab.org/images/anvio/2016-11-08-pan-genomics/hi-core-01.png)
 
@@ -841,7 +849,7 @@ $ anvi-get-sequences-for-gene-clusters -p PROCHLORO/Prochlorococcus_Pan-PAN.db \
 
 不用说，每个基因簇的同质性指数估计值也会出现在`anvi-summarize`的摘要文件中，以满足统计需求。
 
-#### 3.3.7 在泛基因组中了解函数的意义
+#### 在泛基因组中了解函数的意义
 
 一旦有了泛基因组，我们通常想做的关键事情之一是看一下与我们的基因簇相关的功能。这是一个关键而又复杂的挑战，我们可以通过多种方式来解决。在这里，我们将介绍如何识别富集于你的pangenome中的一些支系或亚支系的功能。此外，我们还将讨论如何找到泛基因组的功能核心。这是通过我们新改进的`anvi-get-enriched-functions-per-pan-group`程序完成的。
 
@@ -909,6 +917,27 @@ $ anvi-get-enriched-functions-per-pan-group -p PROCHLORO/Prochlorococcus_Pan-PAN
 9. **p_LL**和**p_HL**对于每个组（在这个例子中，有两个组：LL和LH），将有一列是我们检测到功能的组成员的部分。
 10. **N_LL**和**N_HL**对于每个组来说，这些列都指定了该组的基因组的总数。
 
+> 此实例只包括两个类别（LL和HL），可以根据需求拥有多个不同类别。只要记住，若某些组中的基因组数量很少，则统计测试结果不会很可靠。要使测试结果可靠，每组中最小基因组数取决于许多因素，但若任意一组的基因组少于8个，建议谨慎进行。
+
+> Amy Willis关于功能丰富度分数的说明：
+>
+> 这里提出并在Anvi’o中实现的功能丰富度分数和Rao检验统计的一样。基本上，它把每个类别（这里是高光和弱光）作为逻辑回归（二项式 GLM（[广义线性模型](https://blog.csdn.net/gactyxc/article/details/52488598)））中的一个解释变量，并测试分类变量在解释功能发生方面的意义。该测试考虑了这样一个事实，即从一个类别中观察到的基因组可能比另一个类别多。像往常一样，有更多的基因组使测试更加可靠。有很多不同的方法来做这个测试，但我们做了一些调查，发现在所有控制第一类错误率的测试中，拉奥测试的力量最高。由于许多用户会关注对许多功能的富集测试，默认情况下，我们通过控制错误发现率来调整多重测试。因此，如果你使用`anvi-get-enriched-functions-per-pan-group`，请在你的论文中报告q值而不是p值。
+
+现在让我们搜索一下表中的一个顶级功能 "Ser/Thr protein kinase RdoA involved in Cpx stress response, MazF antagonist（参与Cpx应激反应的Ser/Thr蛋白激酶RdoA，MazF拮抗剂）"，它富含LL组的成员，我们可以在表中看到，它与四个基因簇相匹配。
+
+![](https://merenlab.org/images/anvio/2016-11-08-pan-genomics/ser_thr_kinase_gene_clusters.png)
+
+事实上，如果我们仔细观察，能发现这个功能与一个基因簇相匹配，而这个基因簇对于四个弱光族中的每一个都是独一无二的，是泛基因组中弱光基因组的单拷贝核心基因。
+
+来看看另一个富集的功能：`Exonuclease VII, large subunit`（外切酶VII，大亚单位）。当搜索这个功能时，应该小心，因为这个功能的名称包含一个逗号，而交互式界面中的功能搜索选项将逗号视为分隔多个要同时搜索的功能。因此，我刚刚搜索了`Exonuclease VII`，下面是搜索结果：
+
+<img src="https://merenlab.org/images/anvio/2016-11-08-pan-genomics/Exonuclease-VII.png" style="zoom: 33%;" />
+
+我们可以看到，该搜索与外切酶VII、大亚基和小亚基的命中率都相匹配，共有22个命中。
+
+![](https://merenlab.org/images/anvio/2016-11-08-pan-genomics/Exonuclease-VII-2.png)
+
+大亚基与在`CORE LL`中的一个基因簇相匹配，而小亚基则与每个宗族特定核心中的一个基因簇相匹配（类似于我们在上面看到的Ser/Thr蛋白激酶的情况）。这两个基因也是弱光成员特有的单拷贝核心的一部分，光成员没有。
 
 
 
@@ -919,11 +948,12 @@ $ anvi-get-enriched-functions-per-pan-group -p PROCHLORO/Prochlorococcus_Pan-PAN
 
 
 
-#### 3.3.8 计算基因组的平均核苷酸分数（以及其他基因组相似性指标！）。
-
-#### 3.3.9 统计Anvi’o泛基因组
 
 
+
+#### 计算基因组的平均核苷酸分数（以及其他基因组相似性指标！）。
+
+#### 统计Anvi’o泛基因组
 
 
 
