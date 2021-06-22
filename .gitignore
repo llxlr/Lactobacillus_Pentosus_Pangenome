@@ -10,4 +10,5 @@ __pycache__/
 *.fasta
 *.db
 *.gz
+*.pdf
 !thesis/raw-thesis.db

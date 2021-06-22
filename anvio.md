@@ -1,6 +1,6 @@
 # Anvi’o折腾记录和学习
 
-> [<img src="https://cdn.jsdelivr.net/gh/llxlr/cdn/img/2021/06/04/020611.jpeg" alt="星旅人" style="width: 30px;"/>](https://github.com/llxlr/Lactobacillus_Pentosus_Pangenome/) *2021.06.03~2021.06.08, 2021.06.19*
+> [<img src="https://cdn.jsdelivr.net/gh/llxlr/cdn/img/2021/06/04/020611.jpeg" alt="星旅人" style="width: 30px;"/>](https://github.com/llxlr/Lactobacillus_Pentosus_Pangenome/) *2021.06.03~2021.06.08, 2021.06.19~2021.06.23*
 
 [toc]
 
@@ -98,8 +98,6 @@ $ pip config set global.index-url https://mirrors.bfsu.edu.cn/pypi/web/simple
 ```bash
 $ conda update conda -y  # 更新conda
 $ conda update -n base -y --all  # 更新主环境所有包
-$ conda create -n anvio python=3.6 -y  # 创建python3.6的虚拟环境
-$ conda activate anvio  # 激活虚拟环境
 ```
 
 使用`environment.yml`创建环境：
@@ -111,6 +109,8 @@ $ conda env create -f environment.yml
 之后就不用下面的手动安装`conda`的包，继续编译安装其他包。
 
 ```bash
+$ conda create -n anvio python=3.6 -y  # 创建python3.6的虚拟环境
+$ conda activate anvio  # 激活虚拟环境
 $ conda install -y -c bioconda \
   "sqlite >=3.31.1" \
   prodigal \
@@ -231,6 +231,16 @@ $ anvi-gen-contigs-database -f BGM48.contigs.fna -o BGM48.db
 
 ```bash
 $ anvi-profile --version  # 查看当前anvi'o的版本
+Anvi'o .......................................: hope (v7)
+
+Profile database .............................: 35
+Contigs database .............................: 20
+Pan database .................................: 14
+Genome data storage ..........................: 7
+Auxiliary data storage .......................: 2
+Structure database ...........................: 2
+Metabolic modules database ...................: 2
+tRNA-seq database ............................: 1
 ```
 
 ## 案例
@@ -280,25 +290,9 @@ $ anvi-gen-contigs-database -f contigs.fa \
 
 未完待续……
 
-### 无映射分箱
+### [无映射分箱](https://merenlab.org/2016/06/06/working-with-contigs-only/)
 
 在[宏基因组工作流程](https://merenlab.org/2016/06/22/anvio-tutorial-v2/)中假设您有宏基因组短读。但如果拥有的只是一堆重叠群、基因组草图或MAG，而没有任何可映射的短读呢？关键是创建一个空白的Anvi’o配置文件数据库（profile database），与重叠群数据库（contigs database）一起使用。
-
-查看当前Anvi’o安装版本：
-
-```bash
-$ anvi-profile -v
-Anvi'o .......................................: hope (v7)
-
-Profile database .............................: 35
-Contigs database .............................: 20
-Pan database .................................: 14
-Genome data storage ..........................: 7
-Auxiliary data storage .......................: 2
-Structure database ...........................: 2
-Metabolic modules database ...................: 2
-tRNA-seq database ............................: 1
-```
 
 #### 准备FASTA文件
 
@@ -851,7 +845,7 @@ $ anvi-get-sequences-for-gene-clusters -p PROCHLORO/Prochlorococcus_Pan-PAN.db \
 
 #### 在泛基因组中了解函数的意义
 
-一旦有了泛基因组，我们通常想做的关键事情之一是看一下与我们的基因簇相关的功能。这是一个关键而又复杂的挑战，我们可以通过多种方式来解决。在这里，我们将介绍如何识别富集于你的pangenome中的一些支系或亚支系的功能。此外，我们还将讨论如何找到泛基因组的功能核心。这是通过我们新改进的`anvi-get-enriched-functions-per-pan-group`程序完成的。
+一旦有了泛基因组，我们通常想做的关键事情之一是看一下与我们的基因簇相关的功能。这是一个关键而又复杂的挑战，我们可以通过多种方式来解决。在这里，我们将介绍如何识别富集于你的泛基因组中的一些支系或亚支系的功能。此外，我们还将讨论如何找到泛基因组的功能核心。这是通过我们新改进的`anvi-get-enriched-functions-per-pan-group`程序完成的。
 
 这个程序利用你的泛数据库的图层附加数据表中的信息来识别你的基因组中的 "组"，并找到在这些组中富集的功能，即这些基因组所特有的功能，而在这个组以外的基因组中主要是没有的。要使用这个功能，你必须至少有一个分类的附加层信息（可以很容易地通过`anvi-import-misc-data`完成），并且你的基因组存储至少有一个功能注释源（如果你运行`anvi-gen-genomes-storage`时使用的每个重叠群数据库都有相同的功能注释源，这将自动成为一种情况）。
 
@@ -937,7 +931,7 @@ $ anvi-get-enriched-functions-per-pan-group -p PROCHLORO/Prochlorococcus_Pan-PAN
 
 ![](https://merenlab.org/images/anvio/2016-11-08-pan-genomics/Exonuclease-VII-2.png)
 
-大亚基与在`CORE LL`中的一个基因簇相匹配，而小亚基则与每个宗族特定核心中的一个基因簇相匹配（类似于我们在上面看到的Ser/Thr蛋白激酶的情况）。这两个基因也是弱光成员特有的单拷贝核心的一部分，光成员没有。
+大亚基与在`CORE LL`中的一个基因簇相匹配，而小亚基则与每个宗族特定核心中的一个基因簇相匹配（类似于我们在上面看到的Ser/Thr蛋白激酶的情况）。这两个基因也是弱光成员特有的单拷贝核心的一部分，强光成员没有。
 
 
 
