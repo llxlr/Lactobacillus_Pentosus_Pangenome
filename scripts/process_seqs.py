@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
 from Bio.SeqUtils import GC
 from Bio import SeqIO
 import os

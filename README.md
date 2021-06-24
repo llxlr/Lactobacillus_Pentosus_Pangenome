@@ -2,7 +2,13 @@
 
 > 戊糖乳杆菌泛基因组分析
 
-1. 下载、解压序列文件：
+## 工作流程
+
+流程图：
+
+![流程图]()
+
+### 下载、解压序列文件：
 
 ```bash
 $ cd ./sequence/origin/
@@ -15,7 +21,7 @@ $ for file in *.fna.gz;do gzip -d $file;done
 $ cd -
 ```
 
-2. 格式化`FASTA`序列文件为`Contig`叠连群序列文件
+### 格式化`FASTA`序列文件为`Contig`叠连群序列文件
 
 ```bash
 $ for file in ./sequence/origin/*.fna;do
@@ -25,7 +31,7 @@ $ for file in ./sequence/origin/*.fna;do
 > done
 ```
 
-3. 生成`Contig`叠连群数据库
+### 生成`Contig`叠连群数据库
 
 ```bash
 $ for file in ./sequence/contig/*.contig.fna;do
@@ -42,7 +48,7 @@ $ for file in ./database/*.db;do
 > done
 ```
 
-### 更多
+## 更多
 
 - [Anvi’o折腾记录和学习](anvio.md)
 

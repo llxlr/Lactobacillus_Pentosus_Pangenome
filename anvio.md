@@ -1,6 +1,6 @@
 # Anvi’o折腾记录和学习
 
-> [<img src="https://cdn.jsdelivr.net/gh/llxlr/cdn/img/2021/06/04/020611.jpeg" alt="星旅人" style="width: 30px;"/>](https://github.com/llxlr/Lactobacillus_Pentosus_Pangenome/) *2021.06.03~2021.06.08, 2021.06.19~2021.06.23*
+> *2021.06.03~2021.06.08, 2021.06.19~2021.06.23* [<img src="https://cdn.jsdelivr.net/gh/llxlr/cdn/img/2021/06/04/020611.jpeg" alt="星旅人" style="width: 30px;"/>](https://github.com/llxlr/Lactobacillus_Pentosus_Pangenome/)
 
 [toc]
 
@@ -843,7 +843,7 @@ $ anvi-get-sequences-for-gene-clusters -p PROCHLORO/Prochlorococcus_Pan-PAN.db \
 
 不用说，每个基因簇的同质性指数估计值也会出现在`anvi-summarize`的摘要文件中，以满足统计需求。
 
-#### 在泛基因组中了解函数的意义
+#### 在泛基因组中了解功能的意义
 
 一旦有了泛基因组，我们通常想做的关键事情之一是看一下与我们的基因簇相关的功能。这是一个关键而又复杂的挑战，我们可以通过多种方式来解决。在这里，我们将介绍如何识别富集于你的泛基因组中的一些支系或亚支系的功能。此外，我们还将讨论如何找到泛基因组的功能核心。这是通过我们新改进的`anvi-get-enriched-functions-per-pan-group`程序完成的。
 
@@ -900,7 +900,7 @@ $ anvi-get-enriched-functions-per-pan-group -p PROCHLORO/Prochlorococcus_Pan-PAN
 
 以下是对每一栏的描述：
 
-1. **类别category**是你从图层附加数据表中选择的列，以便在你的基因组中分辨组别。在原绿球藻的案例中，我们有两个光照组：低光照（LL），和高光照（HL）。输出的表格首先根据这一栏进行排序，在每个组内，表格根据富集度得分进行排序。
+1. **category类别**是你从图层附加数据表中选择的列，以便在你的基因组中分辨组别。在原绿球藻的案例中，我们有两个光照组：低光照（LL），和高光照（HL）。输出的表格首先根据这一栏进行排序，在每个组内，表格根据富集度得分进行排序。
 2. **COG_FUNCTION**这一栏是计算富集度的具体功能的名称。在这个例子中，我们选择使用`COG_FUNCTION`进行功能注释，因此列的标题是`COG_FUNCTION`。你可以使用`--annotation-source`指定你的泛数据库中的任何一个功能注释源，然后分析就会根据这个注释源来进行。即使你的基因组存储中有多个功能注释源，在这个程序的一次运行中也只能使用一个源。如果你愿意，你可以多次运行它，每次使用不同的注释源。如果你不记得你的基因组存储中哪些注释源是可用的，你可以使用`–list-annotation-sources`。
 3. **enrichment_score**是一个分数，用来衡量这个功能对属于特定组的基因组与你的泛基因组中所有其他基因组的独特程度。这个分数是由[Amy Willis](https://github.com/adw96)开发的。关于我们如何产生这个分数的更多细节，请看下面Amy的说明。
 4. **unadjusted_p_value**是充实度检验的p值（未对多重检验进行调整）。
@@ -931,29 +931,359 @@ $ anvi-get-enriched-functions-per-pan-group -p PROCHLORO/Prochlorococcus_Pan-PAN
 
 ![](https://merenlab.org/images/anvio/2016-11-08-pan-genomics/Exonuclease-VII-2.png)
 
-大亚基与在`CORE LL`中的一个基因簇相匹配，而小亚基则与每个宗族特定核心中的一个基因簇相匹配（类似于我们在上面看到的Ser/Thr蛋白激酶的情况）。这两个基因也是弱光成员特有的单拷贝核心的一部分，强光成员没有。
+大亚基与在`CORE LL`中的一个基因簇相匹配，而小亚基则与每个族特定核心中的一个基因簇相匹配（类似于我们在上面看到的Ser/Thr蛋白激酶的情况）。这两个基因也是弱光成员特有的单拷贝核心的一部分，强光成员没有。
 
+（1）利用功能创建快速泛基因组
 
+下一步介绍另外的特征`--functional-occurrence-table-output`，我们的命令行包含此参数。
 
+```bash
+$ anvi-get-enriched-functions-per-pan-group -p PROCHLORO/Prochlorococcus_Pan-PAN.db \
+  -g PROCHLORO-GENOMES.db \
+  --category light \
+  --annotation-source COG_FUNCTION \
+  -o PROCHLORO-PAN-enriched-functions-light.txt \
+  --functional-occurrence-table-output PROCHLORO-functions-occurrence-frequency.txt
+```
 
+该可选输出是TAB制表符分隔文件，其具有基因组中功能的发生信息的频率（即基因组中的许多基因与每个功能有关）。
 
+ `PROCHLORO-PAN-enriched-functions-clade.txt`看起来这样：
 
+`PROCHLORO-functions-occurrence-frequency.txt`看起来这样：
 
+|                                                              | AS9601 | CCMP1375 | EQPAC1 | GP2  | LG   | MED4 | MIT9107 | MIT9116 | MIT9123 | MIT9201 | MIT9202 | MIT9211 | MIT9215 | MIT9301 | MIT9302 | MIT9303 | MIT9311 | MIT9312 | MIT9313 | MIT9314 | MIT9321 | MIT9322 | MIT9401 | MIT9515 | NATL1A | NATL2A | PAC1 | SB   | SS2  | SS35 | SS51 |
+| ------------------------------------------------------------ | ------ | -------- | ------ | ---- | ---- | ---- | ------- | ------- | ------- | ------- | ------- | ------- | ------- | ------- | ------- | ------- | ------- | ------- | ------- | ------- | ------- | ------- | ------- | ------- | ------ | ------ | ---- | ---- | ---- | ---- | ---- |
+| 3-deoxy-D-manno-octulosonate 8-phosphate phosphatase KdsC and related HAD superfamily phosphatases | 0      | 0        | 0      | 0    | 0    | 0    | 0       | 0       | 0       | 0       | 0       | 0       | 0       | 0       | 0       | 1       | 0       | 0       | 1       | 0       | 0       | 0       | 0       | 0       | 0      | 0      | 0    | 0    | 0    | 0    | 0    |
+| Creatinine amidohydrolase/Fe(II)-dependent formamide hydrolase involved in riboflavin and F420 biosynthesis | 1      | 1        | 1      | 1    | 1    | 1    | 1       | 1       | 1       | 1       | 1       | 1       | 1       | 1       | 1       | 1       | 1       | 1       | 1       | 1       | 1       | 1       | 1       | 1       | 1      | 1      | 1    | 1    | 1    | 1    | 1    |
+| RNA recognition motif (RRM) domain                           | 1      | 1        | 1      | 1    | 1    | 1    | 1       | 1       | 1       | 1       | 1       | 1       | 1       | 1       | 1       | 1       | 1       | 1       | 1       | 1       | 1       | 1       | 1       | 1       | 1      | 1      | 1    | 1    | 1    | 1    | 1    |
+| (…)                                                          | (…)    | (…)      | (…)    | (…)  | (…)  | (…)  | (…)     | (…)     | (…)     | (…)     | (…)     | (…)     |         |         |         |         |         |         |         |         |         |         |         |         |        |        |      |      |      |      |      |
 
+使用功能发生表进行可视化。首先，修正功能的名称，去掉逗号等东西。基本上，我们只保留字母、数字和字符，并将任何非字母、非数字字符的序列替换为一个`_`。
 
+使用脚本：
 
+```bash
+$ wget https://gist.githubusercontent.com/ShaiberAlon/aff0b2493637a370c7d52e1a5aacecea/raw/f088d6af4b4b26afe43c67874e2563c407039355/fix_functional_occurrence_table.py
+```
 
+使用方法：
 
+```bash
+$ python fix_functional_occurrence_table.py \
+         --input-file PROCHLORO-functions-occurrence-frequency.txt \
+         --output-file PROCHLORO-functions-occurrence-frequency-fixed.txt \
+         --name-dict-output PROCHLORO-functions-names-dict.txt
+```
 
-#### 计算基因组的平均核苷酸分数（以及其他基因组相似性指标！）。
+检查名称的变化是否产生了多余的名称：
+
+```bash
+$ cut -f 2 PROCHLORO-functions-names-dict.txt | sort | uniq -d
+```
+
+可以看到`Fatty_acid_desaturase`和`Protein_tyrosine_phosphatase`。这是因为有两个`COG`功能`Protein-tyrosine phosphatase`（登录号`COG2453`）和`Protein-tyrosine-phosphatase`（登录号`COG0394`）在泛基因组中匹配不同的基因簇。因为我们不能创建一个有重复节点的树，因为我们不能真的说这些是不同的功能，在上面的脚本中，除了改变名称之外，它还将这些重复出现的情况合并。（使用逻辑或`or`合并它们的发生）
+
+然后我们在交互式界面中创建了树：
+
+```bash
+$ anvi-matrix-to-newick PROCHLORO-functions-occurrence-frequency-fixed.txt \
+                        -o PROCHLORO-functions-tree.txt
+$ anvi-matrix-to-newick PROCHLORO-functions-occurrence-frequency-fixed.txt \
+                        -o PROCHLORO-functions-layers-tree.txt \
+                        --transpose
+```
+
+我们进行快速模拟运行，创建一个手动模式的配置文件数据库。
+
+```bash
+$ anvi-interactive -p PROCHLORO-functions-manual-profile.db \
+                   --tree PROCHLORO-functions-tree.txt \
+                   -d PROCHLORO-functions-occurrence-frequency-fixed.txt \
+                   --manual \
+                   --dry-run
+```
+
+为图层顺序导入树：
+
+```bash
+$ echo -e "item_name\tdata_type\tdata_value" > PROCHLORO-functions-layers-order.txt
+$ echo -e "PROCHLORO_functions_tree\tnewick\t`cat PROCHLORO-functions-layers-tree.txt`" \
+                             >> PROCHLORO-functions-layers-order.txt
+$ anvi-import-misc-data PROCHLORO-functions-layers-order.txt \
+                        -p PROCHLORO-functions-manual-profile.db \
+                        -t layer_orders \
+                        --just-do-it
+```
+
+我们可以从泛数据库中获得一些关于基因组的信息
+
+```bash
+$ anvi-export-misc-data -p PROCHLORO/Prochlorococcus_Pan-PAN.db \
+                        -t layers \
+                        -o PROCHLORO-layer-additional-data.txt
+```
+
+然后将其导入我们的手动模式配置文件数据库中：
+
+```bash
+$ anvi-import-misc-data PROCHLORO-layer-additional-data.txt \
+                        -p PROCHLORO-functions-manual-profile.db \
+                        -t layers
+```
+
+你下载的工作目录包括一个漂亮的状态，我们为这个配置文件数据库创建了一个集合，让我们导入这些：
+
+```bash
+$ anvi-import-state -p PROCHLORO-functions-manual-profile.db \
+                    -s PROCHLORO-manual-default-state.json \
+                    -n default
+```
+
+可以使用这个临时脚本来获得核心功能。你可以下载该脚本：
+
+```bash
+$ wget https://gist.githubusercontent.com/ShaiberAlon/2a8c1b12a372c77a7569dec7c317d37b/raw/55603505c2d1d40ce0528671e25e9f5c82b4bf43/get-core-functions.py
+```
+
+使用方法：
+
+```bash
+$ python get-core-functions.py \
+         --input PROCHLORO-functions-occurrence-frequency-fixed.txt \
+         --output PROCHLORO-functions-collection.txt
+```
+
+现在我们可以导入这些集合：
+
+```bash
+# let's first create a collection info file so ew can all have the same colors in the interactive :-)
+$ echo -e "Functional_core\tUNKOWN\t#8c0735" > PROCHLORO-functions-collection-info.txt
+$ anvi-import-collection -p PROCHLORO-functions-manual-profile.db \
+                         -C default \
+                         PROCHLORO-functions-collection.txt \
+                         --bins-info PROCHLORO-functions-collection-info.txt
+```
+
+可视化：
+
+```bash
+$ anvi-interactive -p PROCHLORO-functions-manual-profile.db \
+                   -t PROCHLORO-functions-tree.txt \
+                   -d PROCHLORO-functions-occurrence-frequency-fixed.txt \
+                   --title "Prochlorococcus Pan - functional occurrence" \
+                   --manual
+```
+
+![](https://merenlab.org/images/anvio/2016-11-08-pan-genomics/Functional-frequency.png)
+
+我们可以看到，功能的出现几乎完美地复现了所有四个`LL`支系。相比之下，两个`HL`支系似乎稍微混在一起。
+
+我们有一个869个核心功能的集合。但核心功能有点分散，这是由于我们使用了功能的出现频率。让我们根据发生率（即1和0）来增加一个组织。为了做到这一点，我们首先使用这个临时脚本转换频率表。你可以先下载它：
+
+```bash
+$ wget https://gist.githubusercontent.com/ShaiberAlon/8ebd5fb43308086d5455bea18bbdefee/raw/1e83080ac17244a68f0d2a2f25402ee8c0180634/convert-frequencey-table-to-occurrence-table.py
+```
+
+使用方法：
+
+```bash
+$ python convert-frequencey-table-to-occurrence-table.py \
+         --input PROCHLORO-functions-occurrence-frequency-fixed.txt \
+         --output PROCHLORO-functions-occurrence-fixed.txt
+```
+
+我们可以生成一个项目顺序和图层顺序树：
+
+```bash
+$ anvi-matrix-to-newick PROCHLORO-functions-occurrence-fixed.txt \
+                        -o PROCHLORO-functions-occurrence-tree.txt
+
+$ anvi-matrix-to-newick PROCHLORO-functions-occurrence-fixed.txt \
+                        -o PROCHLORO-functions-occurrence-layers-tree.txt \
+                        --transpose
+```
+
+我们导入新的图层顺序：
+
+```bash
+$ echo -e "PROCHLORO_functions_occurrence_tree\tnewick\t`cat PROCHLORO-functions-occurrence-layers-tree.txt`" \
+                             >> PROCHLORO-functions-layers-order.txt
+
+$ anvi-import-misc-data PROCHLORO-functions-layers-order.txt \
+                        -p PROCHLORO-functions-manual-profile.db \
+                        -t layer_orders \
+                        --just-do-it
+```
+
+再一次可视化：
+
+```bash
+$ anvi-interactive -p PROCHLORO-functions-manual-profile.db \
+                   -t PROCHLORO-functions-occurrence-tree.txt \
+                   -d PROCHLORO-functions-occurrence-frequency-fixed.txt \
+                   --title "Prochlorococcus Pan - functional occurrence" \
+                   --manual
+```
+
+![](https://merenlab.org/images/anvio/2016-11-08-pan-genomics/Functional-occurrence.png)
+
+现在所有的核心功能都聚集在一起了。我们还可以使用我们用二进制发生数据生成的树来改变层的顺序（只需在图层标签中选择`PROCHLORO_functions_occurrence_tree`即可）：
+
+![](https://merenlab.org/images/anvio/2016-11-08-pan-genomics/Functional-occurrence_2.png)
+
+当我们使用二进制发生数据时，那么我们就会看到四个`LL`支系是完美复现的，但`HL`支系是真正的混合。
+
+让我们来看看核心功能是如何对应于基因簇的。将使用一个临时的小脚本，你可以下载:
+
+```bash
+$ wget https://gist.githubusercontent.com/ShaiberAlon/d2adc8a55a2ac1ea6458d67e90181a7e/raw/3ad0efbf93038e627f2a4aa268b5f3a8beb99fa9/get-gcs-of-core-functions.py
+```
+
+使用方法：
+
+```bash
+$ python get-gcs-of-core-functions.py \
+         --enrichment-data PROCHLORO-PAN-enriched-functions-light.txt \
+         --core-functions PROCHLORO-functions-collection.txt \
+         --name-dict PROCHLORO-functions-names-dict.txt \
+         --output-file PROCHLORO-GCs-of-core_functions.txt
+```
+
+然后我们得到一个有2613个基因簇的文件。现在我们可以将其与我们上面的基因簇集合进行比较。例如，我们可以发现，在`CORE_LL`中的基因簇有多少是在所有31个原绿球藻基因组的功能核心中。
+
+因此，让我们假设之前做了这些选择，现在可以导出`GC`的集合。
+
+```bash
+$ anvi-export-collection -p PROCHLORO/Prochlorococcus_Pan-PAN.db \
+                         -C default \
+                         -O PROCHLORO-PAN-default-collection
+```
+
+```bash
+$ for gc in `grep CORE_LL PROCHLORO-PAN-default-collection.txt`
+> do
+>     grep $gc PROCHLORO-GCs-of-core_functions.txt
+> done > CORE_LL_included_in_functional_core.txt
+```
+
+我们发现，144个基因簇中有103个是功能核心的一部分。而对于`HL`来说，499个中有294个被发现是功能核心的一部分。需要记住的一件事是，没有功能关联的基因簇不包括在这个分析中。
+
+我们可以找到所有与功能相关的基因簇：
+
+```bash
+$ awk -F $'\t' '{ print $7 }' PROCHLORO-PAN-enriched-functions-light.txt |
+    tr ',' '\n' |
+      sed 's/ //g' > all_gene_clusters_with_functions.txt
+```
+
+有3629个具有功能的基因簇。有多少属于`CORE_HL`的基因簇有功能？
+
+```bash
+$ for gc in `grep CORE_HL PROCHLORO-PAN-default-collection.txt`
+> do
+>     grep $gc all_gene_clusters_with_functions.txt;
+> done > HL_CORE_GC_with_functions.txt
+
+$ wc -l HL_CORE_GC_with_functions.txt
+321
+```
+
+在`CORE_HL`中，有321个（总共499个）基因簇有功能。因此，`CORE_HL`中的许多基因簇没有被发现是功能核心的一部分，只是没有任何功能注释。
+
+#### 计算基因组的平均核苷酸相似度（以及其他基因组相似性指标！）。
+
+Anvi'o还包含一个`anvi-compute-ani`（原名为`anvi-compute-genome-similarity`）程序，使用各种相似性指标，如[PyANI](https://doi.org/10.1039/C5AY02550H)来计算你的基因组的平均核苷酸相似度，[sourmash](https://doi.org/10.21105/joss.00027)来计算你的基因组的最小哈希（MinHash）距离。它期待外部基因组文件、内部基因组文件或指向FASTA文件路径的fasta文本文件的任何组合（每个FASTA被假定为1个基因组）。此外，`anvi-compute-genome-similarity`还可以选择接受一个泛数据库，将所有的结果作为附加层数据加入其中。
+
+还是原绿球藻泛基因组案例：
+
+```bash
+$ anvi-compute-genome-similarity --external-genomes external-genomes.txt \
+                                 --program pyANI \
+                                 --output-dir ANI \
+                                 --num-threads 6 \
+                                 --pan-db PROCHLORO/Prochlorococcus_Pan-PAN.db
+```
+
+一旦完成，我们可以再次对泛基因组进行可视化，看看有什么新玩意：
+
+```bash
+$ anvi-display-pan -g PROCHLORO-GENOMES.db \
+                   -p PROCHLORO/Prochlorococcus_Pan-PAN.db
+```
+
+当第一眼看到它时，不会看到任何不寻常的东西。但如果进入**"Layers图层"**选项卡，会看到下面的补充：
+
+<img src="https://merenlab.org/images/anvio/2016-11-08-pan-genomics/layer-groups-ani.png" style="zoom:50%;" />
+
+如果点击复选框，例如`ANI_percentage_identity`，你会看到一组新的条目将被添加到图层数据条目列表中。然后，如果你点击**"Draw绘制"**或**"Redraw layer data重绘图层数据"**按钮，你应该看到`ANI`被添加到你的显示中：
+
+![](https://merenlab.org/images/anvio/2016-11-08-pan-genomics/prochlorococcus-ani.png)
+
+> **一个如何排序基因组的小笔记：**
+>
+> 对我来说，如何在基因簇方面对基因组进行排序一直是一个问号。是否应该使用基因簇的存在/不存在模式来组织基因组（在这种情况下，人们忽略了旁系物，并使用二进制表格来对基因组进行分类）？还是应该依靠基因簇频率数据来排序（在这种情况下，人们确实考虑了旁系物，所以他们的表格不再是二进制的，而是包含每个基因簇中每个基因组的基因数的频率）？
+>
+> 感谢Özcan对代码库的[新补充](https://github.com/merenlab/anvio/commit/aa007cf902dea2de4bd63524cd49f0566cf2511d)，当我在编写本节教程时，对“如何在泛基因组中排列基因组”这个问题有了一个意外的观察。
+>
+> 这就是我根据基因簇频率数据对原绿球藻基因组进行排序时，ANI矩阵的样子：
+>
+> ![](https://merenlab.org/images/anvio/2016-11-08-pan-genomics/ani-gc-freqs.png)
+>
+> 相比之下，当我根据基因簇存在/不存在的数据对基因组进行排序时，ANI矩阵是这样的：
+>
+> ![](https://merenlab.org/images/anvio/2016-11-08-pan-genomics/ani-gc-preabs.png)
+>
+> 如果你正在处理分离的基因组，也许你应该考虑根据基因簇的频率来排序，因为你会期望基于基因簇的基因组的适当组织往往应该与它们的整体相似性相匹配。这里有一些小的说明：
+>
+> - 在这种情况下，我们很容易看到，通过基因簇存在/不存在的数据来组织基因组的工作做得很差，把高光II组（紫色）和高光I组（便便色）的基因组混在一起。我们可以清楚地识别这个问题，因为我们知道这些基因组所属的支系，在你不知道这些关系的情况下，似乎基因簇频率可以更准确地组织你的基因组。
+> - 令人难过的是，MAG经常会缺乏多拷贝基因，而且它们的旁系亲属较少（因为短读数的组装会产生非常复杂的德布莱英图（[De Bruijn Graph](https://zhuanlan.zhihu.com/p/57177938)），它抹去了特定基因组中的所有冗余），因此它们的适当组织不会真正受益于基因簇频率数据，至少不会像隔离基因组那样，我们在基于基因簇存在/不存在数据的组织中看到的错误会对我们的庞然大物产生较大影响。
+> - 看到高光组II中出现的那些亚支系了吗？如果你有兴趣，请看看我们关于[宏泛基因组的论文](https://peerj.com/articles/4320/)（特别是**“The metapangenome reveals closely related isolates with different levels of fitness”**一节），其中我们将HL-II分为多个亚族，并表明尽管这些基因组之间的差异很小，但这些亚族显示了明显不同的环境分布模式。在该研究中，我们可以根据基因簇频率和环境分布模式定义的亚支系与ANI所揭示的群体相当吻合。这又回到了微生物学中一些最基本的问题，即如何定义微生物生命的生态相关单位。我不知道我们是否接近做出任何定义，但我可以告诉你，我们正在使用的那些“系统发育标志物”......我不确定它们是否真的那么有效（笑）。
 
 #### 统计Anvi’o泛基因组
 
+当你把选择的基因簇存储为一个集合时，anvi'o将允许你对这些结果进行统计：
 
+> 即使你想简单地统计泛基因组中的一切，而不在界面中做任何选择，你仍然需要在泛数据库中建立一个集合。但幸运的是，你可以使用程序`anvi-script-add-default-collection`来添加一个包含每个基因簇的默认集合。
 
+该统计步骤给了你两个重要的东西：一个静态的HTML网页，你可以压缩并与你的同事分享，或者作为补充数据文件添加到你的出版物中，以及在输出目录中的一个全面的TAB制表符分隔文件，描述每个基因簇。
 
+你可以用`anvi-summarize`程序来统计一个集合，这个命令的通用形式看起来像这样：
 
+```bash
+$ anvi-summarize -p PROJECT-PAN.db \
+                 -g PROJECT-PAN-GENOMES.db \
+                 -C COLLECTION_NAME \
+                 -o PROJECT-SUMMARY
+```
 
+如果你打开统计目录下的`index.html`文件，你会看到一个输出，其中有关于分析的一些基本信息：
+
+<img src="https://merenlab.org/images/anvio/2016-11-08-pan-genomics/summary.png" style="zoom: 15%;" />
+
+以及基因簇的TAB制表符分隔文件：
+
+![](https://merenlab.org/images/anvio/2016-11-08-pan-genomics/summary-file.png)
+
+这个文件的结构将是这样的，它将给你一个机会以更详细的方式审查你的基因簇（你可能需要向右滚动以看到更多的表格）：
+
+| unique_id | gene_cluster_id | bin_name | genome_name | gene_callers_id | COG_FUNCTION_ACC |                   COG_FUNCTION                    | COG_CATEGORY_ACC |                  COG_CATEGORY                   |       aa_sequence       |
+| :-------: | :-------------: | :------: | :---------: | :-------------: | :--------------: | :-----------------------------------------------: | :--------------: | :---------------------------------------------: | :---------------------: |
+|     1     |   PC_00001990   |          |   MIT9303   |      30298      |     COG1199      |             Rad3-related DNA helicase             |        L         |      Replication, recombination and repair      | MLEARSHQQLKHLLLQNSSP(…) |
+|    (…)    |       (…)       |   (…)    |     (…)     |       (…)       |       (…)        |                        (…)                        |       (…)        |                       (…)                       |           (…)           |
+|    91     |   PC_00001434   | Core_HL  |   MIT9322   |      42504      |     COG3769      | Predicted mannosyl-3-phosphoglycerate phosphatase |        G         |      Carbohydrate transport and metabolism      | MIENSSIWVVSDVDGTLMDH(…) |
+|    (…)    |       (…)       |   (…)    |     (…)     |       (…)       |       (…)        |                        (…)                        |       (…)        |                       (…)                       |           (…)           |
+|    257    |   PC_00000645   | Core_all |   MIT9322   |      42217      |     COG1185      |     Polyribonucleotide nucleotidyltransferase     |        J         | Translation, ribosomal structure and biogenesis | MEGQNKSITFDGREIRLTTG(…) |
+|    (…)    |       (…)       |   (…)    |     (…)     |       (…)       |       (…)        |                        (…)                        |       (…)        |                       (…)                       |           (…)           |
+|   2019    |   PC_00001754   | Core_LL  |   NATL2A    |      49129      |     COG0127      |  Inosine/xanthosine triphosphate pyrophosphatase  |        F         |       Nucleotide transport and metabolism       | MDNVPLVIASGNKGKIGEFK(…) |
+|    (…)    |       (…)       |   (…)    |     (…)     |       (…)       |       (…)        |                        (…)                        |       (…)        |                       (…)                       |           (…)           |
+|   5046    |   PC_00001653   |          |    PAC1     |      52600      |     COG1087      |              UDP-glucose 4-epimerase              |        M         |     Cell wall/membrane/envelope biogenesis      | MRVLLTGGAGFIGSHIALLL(…) |
+|   5047    |   PC_00001653   |          |     LG      |      7488       |     COG1087      |              UDP-glucose 4-epimerase              |        M         |     Cell wall/membrane/envelope biogenesis      | MNRILVTGGAGFIGSHTCIT(…) |
+|   5048    |   PC_00001653   |          |    SS35     |      56661      |     COG1087      |              UDP-glucose 4-epimerase              |        M         |     Cell wall/membrane/envelope biogenesis      | MNRILVTGGAGFIGSHTCIT(…) |
+|   5049    |   PC_00001653   |          |   NATL2A    |      49604      |     COG1087      |              UDP-glucose 4-epimerase              |        M         |     Cell wall/membrane/envelope biogenesis      | MRVLLTGGSGFIGSHVALLL(…) |
+|    (…)    |       (…)       |   (…)    |     (…)     |       (…)       |       (…)        |                        (…)                        |       (…)        |                       (…)                       |           (…)           |
+
+这个文件将把每个基因组中的每个基因与你通过界面或通过`anvi-import-collection`程序进行命名的每个选择联系起来，还可以让你获得每个基因的氨基酸序列和功能。
 
 ## 参考链接
 
@@ -973,7 +1303,8 @@ $ anvi-get-enriched-functions-per-pan-group -p PROCHLORO/Prochlorococcus_Pan-PAN
 14. [The anvi'o interactive interface](https://merenlab.org/2016/02/27/the-anvio-interactive-interface/)
 15. [A tutorial on the anvi'o interactive interface](https://merenlab.org/tutorials/interactive-interface/)
 16. [Notes on genome refinement with anvi'o](https://merenlab.org/2017/05/11/anvi-refine-by-veronika/)
-17. [Word中的SVG格式的矢量插图问题](https://blog.csdn.net/shaoyubin999/article/details/79450168)
-18. [Linux下bowtie2安装(非conda)和配置](https://www.jianshu.com/p/7e8b1e743e3d)
-19. [samtools的安装和使用](https://www.jianshu.com/p/6b7a442d293f)
+17. [DeepL翻译：全世界最准确的翻译](https://www.deepl.com/)
+18. [Word中的SVG格式的矢量插图问题](https://blog.csdn.net/shaoyubin999/article/details/79450168)
+19. [Linux下bowtie2安装(非conda)和配置](https://www.jianshu.com/p/7e8b1e743e3d)
+20. [samtools的安装和使用](https://www.jianshu.com/p/6b7a442d293f)
 
