@@ -37,6 +37,7 @@ $ for file in ./sequence/origin/*.fna;do
 $ for file in ./sequence/contig/*.contig.fna;do
 > anvi-gen-contigs-database -f ${file} -o \
 > $(echo ${file}|sed 's/sequence\/contig/database/g'|sed 's/\.contig\.fna/.db/g'|sed 's/ //g')
+> -n "Lactobacillus Pentosus Pangenome"
 > done
 ```
 
