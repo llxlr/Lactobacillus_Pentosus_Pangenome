@@ -7,14 +7,10 @@ contigs="./sequence/contig/"
 databases="./databases/"
 threads=$1
 
-INFO() {
-    echo -e "\033[1;30m\033[47m:: $1 ...\033[0m";
-}
-
 # 下载、解压序列
 if (($(find ${genomes} -name "*.fna"|wc -l) != 5))
 then
-    INFO "下载原始序列文件"
+    echo -e "\033[1;30m\033[47m:: 下载原始序列文件 ...\033[0m"
     
     wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/003/641/185/GCA_003641185.1_ASM364118v1/GCA_003641185.1_ASM364118v1_genomic.fna.gz -O ${genomes}DSM20314.fna.gz
     wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/002/850/015/GCA_002850015.1_ASM285001v1/GCA_002850015.1_ASM285001v1_genomic.fna.gz -O ${genomes}BGM48.fna.gz
@@ -24,12 +20,12 @@ then
 
     for file in ${genomes}*.fna.gz
     do
-	INFO "解压${file}"
+	echo -e "\033[1;30m\033[47m:: 解压${file} ...\033[0m"
 	gzip -d ${file}
     done
 
 else
-    INFO "存在原始序列文件"
+    echo -e "\033[1;30m\033[47m:: 存在原始序列文件 ...\033[0m"
 fi
 
 # 格式化序列
@@ -37,28 +33,31 @@ for genome in $(ls ${genomes});
 do
     contigs_genome=${contigs}$(echo ${genome}|sed "s/\.fna/\.contigs\.fna/g")
     
-    INFO "原始序列文件 => 重叠群序列文件"
+    # 1
+    echo -e "\033[1;30m\033[47m:: 原始序列文件 => 重叠群序列文件 ...\033[0m"
     if [ ! -f ${contigs_genome} ]
     then
         anvi-script-reformat-fasta ${genomes}${genome} -o ${contigs_genome} --simplify-name
-        echo ${contigs_genome}"已创建！"
+        echo -e "\033[1;30m\033[47m:: "${contigs_genome}"已创建！ ...\033[0m"
     else
-	echo ${contigs_genome}"文件已存在！"
+        echo -e "\033[1;30m\033[47m::  "${contigs_genome}"文件已存在！ ...\033[0m"
     fi
     echo
 
-    INFO "重叠群序列文件 => 重叠群数据库"
+    # 2
+    echo -e "\033[1;30m\033[47m:: 重叠群序列文件 => 重叠群数据库 ...\033[0m"
     db_file=${databases}$(echo ${genome}|sed "s/\.fna/\.db/g")
     if [ ! -f ${db_file} ]
     then
         anvi-gen-contigs-database -f ${contigs_genome} -o ${db_file}
-        echo ${db_file}"已创建！"
+        echo -e "\033[1;30m\033[47m:: "${db_file}"已创建！ ...\033[0m"
     else
-        echo ${db_file}"文件已存在！"
+        echo -e "\033[1;30m\033[47m:: "${db_file}"文件已存在！ ...\033[0m"
     fi
     echo
 
-    INFO "静默运行HMMS"
+    # 3
+    echo -e "\033[1;30m\033[47m:: 静默运行HMMS ...\033[0m"
     anvi-run-hmms -c ${db_file} \
 	    -T ${threads} \
 	    --just-do-it \
@@ -66,15 +65,15 @@ do
     echo
 done
 
-INFO "数据库迁移"
+echo -e "\033[1;30m\033[47m:: 数据库迁移 ...\033[0m"
 anvi-migrate --migrate-dbs-safely ${databases}*.db;
 echo
 
-INFO "生成基因组存储"
+echo -e "\033[1;30m\033[47m:: 生成基因组存储 ...\033[0m"
 anvi-gen-genomes-storage -e ${databases}external-genomes.csv -o ${databases}LP-GENOMES.db;
 echo
 
-INFO "运行泛基因组分析"
+echo -e "\033[1;30m\033[47m:: 运行泛基因组分析 ...\033[0m"
 anvi-pan-genome -g ${databases}LP-GENOMES.db \
 		-n "Lactobacillus_Pentosus_Pangenome" \
 		-o LP \
@@ -84,13 +83,13 @@ anvi-pan-genome -g ${databases}LP-GENOMES.db \
 		--use-ncbi-blast
 echo
 
-# INFO "添加额外层数据"
+# echo -e "\033[1;30m\033[47m:: 添加额外层数据 ...\033[0m"
 # anvi-import-misc-data ${databases}layer-additional-data.txt \
 # 			-p LP/Lactobacillus_Pentosus_Pangenome-PAN.db \
 # 			--target-data-table layers
 # echo
 
-INFO "可视化数据"
+echo -e "\033[1;30m\033[47m:: 可视化数据 ...\033[0m"
 anvi-display-pan -g ${databases}LP-GENOMES.db \
 		 -p LP/Lactobacillus_Pentosus_Pangenome-PAN.db \
 		 -I localhost \
