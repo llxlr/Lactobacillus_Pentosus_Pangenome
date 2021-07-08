@@ -12,7 +12,7 @@
 
 ```bash
 $ cd ./sequence/origin/
-$ wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/003/641/185/GCA_003641185.1_ASM364118v1/GCA_003641185.1_ASM364118v1_genomic.fna.gz -O "DSM 20314.fna.gz"
+$ wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/003/641/185/GCA_003641185.1_ASM364118v1/GCA_003641185.1_ASM364118v1_genomic.fna.gz -O DSM20314.fna.gz
 $ wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/002/850/015/GCA_002850015.1_ASM285001v1/GCA_002850015.1_ASM285001v1_genomic.fna.gz -O BGM48.fna.gz
 $ wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/003/627/295/GCA_003627295.1_ASM362729v1/GCA_003627295.1_ASM362729v1_genomic.fna.gz -O ZFM222.fna.gz
 $ wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/003/627/375/GCA_003627375.1_ASM362737v1/GCA_003627375.1_ASM362737v1_genomic.fna.gz -O ZFM94.fna.gz
@@ -36,7 +36,7 @@ $ for file in ./sequence/origin/*.fna;do
 ```bash
 $ for file in ./sequence/contig/*.contig.fna;do
 > anvi-gen-contigs-database -f ${file} -o \
-> $(echo ${file}|sed 's/sequence\/contig/database/g'|sed 's/\.contig\.fna/.db/g'|sed 's/ //g')
+> $(echo ${file}|sed 's/sequence\/contig/databases/g'|sed 's/\.contig\.fna/.db/g'|sed 's/ //g')
 > -n "Lactobacillus Pentosus Pangenome"
 > done
 ```
@@ -44,8 +44,11 @@ $ for file in ./sequence/contig/*.contig.fna;do
 `hmm`搜索和鉴定单拷贝基因
 
 ```bash
-$ for file in ./database/*.db;do
-> anvi-run-hmms -c ${file} --num-threads 10
+$ for file in ./databases/*.db;do
+> anvi-run-hmms -c ${file} \
+> --num-threads 10 \
+> --just-do-it \
+> --queit
 > done
 ```
 

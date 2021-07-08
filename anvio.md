@@ -1,6 +1,12 @@
 # Anvi’o折腾记录和学习
 
-> *2021.06.03~2021.06.08, 2021.06.19~2021.06.23* [<img src="https://cdn.jsdelivr.net/gh/llxlr/cdn/img/2021/06/04/020611.jpeg" alt="星旅人" style="width: 30px;"/>](https://github.com/llxlr/Lactobacillus_Pentosus_Pangenome/)
+> [<img src="https://cdn.jsdelivr.net/gh/llxlr/cdn/img/2021/06/04/020611.jpeg" alt="星旅人" style="width: 30px;"/>](https://github.com/llxlr/Lactobacillus_Pentosus_Pangenome/)
+>
+> *2021.06.03~2021.06.08*
+>
+> *2021.06.19~2021.06.23*
+>
+> *2021.07.07~2021.07.08*
 
 [toc]
 
@@ -198,7 +204,7 @@ $ du -h -d 1 /opt/miniconda3/envs/
 ```bash
 $ conda clean -y --all  # 清理所有下载包
 $ cd /opt/miniconda3/pkgs/  # 进入下载目录
-$ ls | xargs rm -rf  # 批量删除所有不包含空格的非隐藏文件及目录
+$ ls | xargs rm -rf  # 递归批量删除所有不包含空格的非隐藏文件及目录
 ```
 
 ## 使用
@@ -264,6 +270,7 @@ $ anvi-script-reformat-fasta contigs.fa \
 $ anvi-script-reformat-fasta contigs.fa \
                              -o contigs-fixed.fa \
                              -l 0 \
+                             --report-file \
                              --simplify-names
 ```
 
@@ -287,6 +294,39 @@ $ anvi-gen-contigs-database -f contigs.fa \
                             -o contigs.db \
                             -n 'An example contigs database'
 ```
+
+（3）隐马尔科夫模型
+
+虽然`anvi-run-hmms`绝对是可选项，但你不应该跳过这一步。Anvi'o可以用隐马尔科夫模型做很多事情（HMMs提供了统计手段，以概率术语对复杂数据进行建模，可用于搜索模式，这在生物信息学中效果很好，我们从已知序列中创建模型，然后在未知序列池中快速搜索这些模式以恢复命中率）。为了用平台上的HMM模型（在这一点上，它构成了多个已发表的细菌单拷贝基因集合）的命中率来装饰你的重叠群数据库，运行这个命令：
+
+```bash
+$ anvi-run-hmms -c contigs.db
+```
+
+- 它将利用多个默认的细菌单拷贝核心基因集合，并使用HMMER识别你的基因中与这些集合的命中率。如果你已经运行过一次，现在想添加一个你自己的HMM档案，这很容易。你可以使用`--hmm-profile-dir`参数来声明anvi'o应该在哪里寻找它。或者你可以使用`--installed-hmm-profile`参数，只在你的重叠群数据库上运行一个特定的默认HMM配置文件。
+- 请注意，该程序默认只使用一个CPU，特别是如果你有多个CPU可用，你应该使用`--num-threads`参数。它大大改善了运行时间，因为HMMER确实是一个了不起的软件。
+
+（4）可视化
+
+```bash
+$ anvi-display-contigs-stats contigs.db
+```
+
+（5）注释基因
+
+另一个可选的步骤是运行`anvi-run-ncbi-cogs`程序，用NCBI的Clusters of Orthologus Groups的功能对contigs数据库中的基因进行注释。不要忘记使用`--num-threads`来指定你希望为此使用多少个核心。
+
+> 如果第一次运行COGs，需要使用`anvi-setup-ncbi-cogs`在你的电脑上进行设置。只要在有互联网连接的机器上运行它。
+
+（6）导入功能
+
+Anvi'o还可以很好地利用你已经拥有的基因的功能注释。下面的文章介绍了将功能导入anvi'o的多种方法：[https://merenlab.org/2016/06/18/importing-functions/](https://merenlab.org/2016/06/18/importing-functions/)
+
+（7）导入`taxonomy`
+
+用分类法对基因进行注释可以使下游的事情更有意义，在某些情况下可能会改善人类引导的分选和细化步骤。请看这个帖子，了解实现这一目标的不同方法：[https://merenlab.org/2016/06/18/importing-taxonomy/](https://merenlab.org/2016/06/18/importing-taxonomy/)。然而，基因水平的分类法对于理解所产生的元基因组组装的基因组的分类法是不可靠的。
+
+（8）配置BAM文件
 
 未完待续……
 
