@@ -797,7 +797,7 @@ $ anvi-display-pan -p SPLIT_PANs/Singletons/PAN.db \
 
 
 
-同样地，可以用你喜欢的任何名字将这些基因簇添加到集合中，并在以后对这些集合进行总结。
+同样地，可以用你喜欢的任何名字将这些基因簇添加到集合中，并在以后对这些集合进行统计。
 
 > 通过程序`anvi-get-sequences-for-gen-clusters`，也可以对基因簇进行高级访问。
 
@@ -1347,4 +1347,5 @@ $ anvi-summarize -p PROJECT-PAN.db \
 18. [Word中的SVG格式的矢量插图问题](https://blog.csdn.net/shaoyubin999/article/details/79450168)
 19. [Linux下bowtie2安装(非conda)和配置](https://www.jianshu.com/p/7e8b1e743e3d)
 20. [samtools的安装和使用](https://www.jianshu.com/p/6b7a442d293f)
+21. [应该是最好的eggnog-mapper功能注释教程](https://www.jianshu.com/p/e646c0fa6443)
 

@@ -13,4 +13,6 @@ __pycache__/
 *.gz
 *.pdf
 !thesis/raw-thesis.db
-LP/
+functions/*.txt
+LP*/
+.HC/
