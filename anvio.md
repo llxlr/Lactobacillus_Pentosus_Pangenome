@@ -168,7 +168,7 @@ $ tar jxvf samtools-1.12.tar.bz2
 $ mkdir /opt/miniconda3/envs/anvio/samtools/
 $ cd samtools-1.12/
 $ sudo apt-get update
-$ sudo apt-get install libbz2-dev liblzma-dev -y
+$ sudo apt-get install libbz2-dev liblzma-dev libncurses5-dev -y
 $ ./configure --prefix=/opt/miniconda3/envs/anvio/samtools/
 $ make && make install
 
