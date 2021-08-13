@@ -100,7 +100,7 @@ $ anvi-pan-genome -g .databases/LP-GENOMES.db \
 
 ### 8. 数据可视化
 
-如果运行过泛基因组分析，可以直接运行可视化。
+如果运行过前面所有步骤，可以直接运行可视化。
 
 ```shell
 $ anvi-display-pan -g ./databases/LP-GENOMES.db \
