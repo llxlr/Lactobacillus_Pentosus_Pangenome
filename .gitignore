@@ -15,5 +15,4 @@ __pycache__/
 !thesis/raw-thesis.db
 functions/*.txt
 LP*/
-.HC2/
 prod/

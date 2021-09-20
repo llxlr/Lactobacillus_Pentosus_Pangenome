@@ -51,7 +51,7 @@ $ sudo apt-get update -y
 $ sudo apt-get install wget -y
 $ wget https://mirrors.bfsu.edu.cn/anaconda/miniconda/Miniconda3-py38_4.9.2-Linux-x86_64.sh
 $ sudo bash ./Miniconda3-py38_4.9.2-Linux-x86_64.sh
-$ sudo chmod ugo+w -R /opt/minicnda3/  # 修改目录权限为所有用户都可写
+$ sudo chmod ugo+w -R /opt/miniconda3/  # 修改目录权限为所有用户都可写
 ```
 
 （2）换源
