@@ -15,5 +15,10 @@ __pycache__/
 !thesis/raw-thesis.db
 functions/*.txt
 LP*/
+<<<<<<< HEAD
 prod/
 venv/
+=======
+.HC2/
+prod/
+>>>>>>> b411f2a958871b8f6e22c70126570fa32c175168
